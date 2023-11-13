@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Errorpage from "./components/Errorpage";
 import Footer from "./components/Footer"
 
+
 function App() {
   return (
     <Router>
@@ -23,8 +24,7 @@ function App() {
         </Routes>
         <Footer/>
       </div>
-    </Router>
-        
+    </Router>        
   );
 }
 

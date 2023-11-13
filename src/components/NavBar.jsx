@@ -2,8 +2,17 @@ import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import CustomNavLink from "./CustomNavLink";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import CustomDropdown from "./CustomDropdown";
+import { logOut } from "../Redux/features/User/userSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(logOut());
+  };
+  const user = useSelector((state) => state.user);
+
   return (
     <Navbar
       collapseOnSelect
@@ -26,16 +35,27 @@ const NavBar = () => {
             <CustomNavLink location="/">Home</CustomNavLink>
             <CustomNavLink location="/todos">Todos</CustomNavLink>
           </Nav>
-          <Nav>
-            <CustomNavLink location="/login">Login</CustomNavLink>
-            <CustomNavLink location="/signup">Sign up</CustomNavLink>
-            <a
-              href="mailto:rahafsalah070@gmail.com"
-              className="btn btn-primary"
-            >
-              Contact us
-            </a>
-          </Nav>
+          {user.isLoggedin ? (
+            <Nav>
+              <div className="alignCenter">
+                <span className="nav-link">Welcome, {user.name}</span>
+                <CustomDropdown options={["Logout"]} action={logout} />
+              </div>
+            </Nav>
+          ) : (
+            <Nav>
+              <CustomNavLink location="/login">Login</CustomNavLink>
+              <CustomNavLink location="/signup">Sign up</CustomNavLink>
+              <Nav>
+                <a
+                  href="mailto:rahafsalah070@gmail.com"
+                  className="btn btn-primary"
+                >
+                  Contact us
+                </a>
+              </Nav>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

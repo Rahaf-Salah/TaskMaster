@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import InputField from "./InputField";
 import axios from "axios";
 import { Button, Container, Row, Col, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Back from "./Back";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Redux/features/User/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +21,8 @@ const Login = () => {
       .then((res) => {
         if (res.data.length > 0) {
           //if user exists and an array with the user object is returned
-          navigate(`users/${res.data[0].id}/todos`);
+          dispatch(setUser(res.data[0]));
+          navigate("/todos");
         } else {
           //if the returned value is an empty array so this user doesn't exist
           setError("This email doesn't exist");
@@ -62,11 +66,6 @@ const Login = () => {
             >
               Login
             </Button>
-            <div className="card-footer">
-              <p>
-                <Link to="/signup"> back to sign up</Link>
-              </p>
-            </div>
           </div>
         </Col>
       </Row>
